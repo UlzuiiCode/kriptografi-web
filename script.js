@@ -48,12 +48,11 @@ function toggleMobileMenu() {
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
     
-    // Change icon
-    const icon = menuToggle.querySelector('.hamburger-icon');
+    // Hide hamburger button when sidebar is open
     if (sidebar.classList.contains('active')) {
-        icon.textContent = '✕';
+        menuToggle.classList.add('hidden');
     } else {
-        icon.textContent = '☰';
+        menuToggle.classList.remove('hidden');
     }
 }
 
@@ -68,9 +67,8 @@ function closeMobileMenu() {
     sidebar.classList.remove('active');
     overlay.classList.remove('active');
     
-    // Reset icon
-    const icon = menuToggle.querySelector('.hamburger-icon');
-    icon.textContent = '☰';
+    // Show hamburger button when sidebar is closed
+    menuToggle.classList.remove('hidden');
 }
 
 /**

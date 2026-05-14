@@ -611,6 +611,13 @@ tr:hover {
     cursor: pointer;
     box-shadow: 0 3px 12px rgba(66, 153, 225, 0.5);
     transition: all 0.3s;
+    opacity: 1;
+}
+
+.mobile-menu-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
 }
 
 .mobile-menu-toggle:hover {
