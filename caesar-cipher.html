@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher Cryptography Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '🔐';
+            font-size: 1.2em;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 28px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .encrypt-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .encrypt-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .decrypt-btn {
+            background: #764ba2;
+            color: white;
+        }
+
+        .decrypt-btn:hover {
+            background: #653a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .output {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid #667eea;
+            min-height: 60px;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+        }
+
+        .visualization {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .viz-step {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f0f0f0;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+        }
+
+        .viz-step:nth-child(even) {
+            background: #e8e8e8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .ascii-table {
+            max-height: 400px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .ascii-table table {
+            font-size: 0.9em;
+        }
+
+        .ascii-char {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #2196F3;
+            line-height: 1.8;
+        }
+
+        .info-box h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .info-box p {
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .formula {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            border: 1px solid #2196F3;
+        }
+
+        .key-info {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 Caesar Cipher Cryptography Tool</h1>
+            <p>Encrypt and decrypt messages using the Caesar Cipher algorithm with ASCII mod 256</p>
+        </header>
+
+        <div class="content">
+            <!-- Main Cipher Tool Section -->
+            <div class="section">
+                <h2>Cipher Tool</h2>
+                
+                <div class="input-group">
+                    <label for="messageInput">Message:</label>
+                    <textarea id="messageInput" placeholder="Enter your message here..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="keyInput">Key (0-255): <span class="key-info" id="keyDisplay">0</span></label>
+                    <input type="number" id="keyInput" min="0" max="255" value="3" placeholder="Enter key (0-255)">
+                </div>
+
+                <div class="button-group">
+                    <button class="encrypt-btn" onclick="encrypt()">🔒 Encrypt</button>
+                    <button class="decrypt-btn" onclick="decrypt()">🔓 Decrypt</button>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Result:</label>
+                    <div class="output" id="output">Your result will appear here...</div>
+                </div>
+            </div>
+
+            <!-- Step-by-Step Visualization Section -->
+            <div class="section">
+                <h2>Step-by-Step Visualization</h2>
+                <div class="visualization" id="visualization">
+                    Process details will appear here after encryption or decryption...
+                </div>
+            </div>
+
+            <!-- Operation History Section -->
+            <div class="section">
+                <h2>Operation History</h2>
+                <div style="overflow-x: auto;">
+                    <table id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Mode</th>
+                                <th>Key</th>
+                                <th>Input</th>
+                                <th>Output</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #999;">No operations yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ASCII Reference Table Section -->
+            <div class="section">
+                <h2>ASCII Reference Table (Printable Characters)</h2>
+                <div class="ascii-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Decimal</th>
+                                <th>Character</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="asciiTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="section">
+                <h2>About Caesar Cipher & Mod 256</h2>
+                <div class="info-box">
+                    <h3>What is Caesar Cipher?</h3>
+                    <p>
+                        The Caesar Cipher is one of the oldest and simplest encryption techniques. Named after Julius Caesar, 
+                        who used it to protect military messages, it works by shifting each character in the message by a fixed 
+                        number of positions in the alphabet (or in our case, the ASCII table).
+                    </p>
+
+                    <h3>How Does This Implementation Work?</h3>
+                    <p>
+                        This tool uses the full ASCII table (0-255) instead of just letters. Each character is converted to its 
+                        ASCII value, then the key is added (for encryption) or subtracted (for decryption), and finally the 
+                        modulo 256 operation is applied to keep the result within valid ASCII range.
+                    </p>
+
+                    <h3>Encryption Formula:</h3>
+                    <div class="formula">
+                        Encrypted ASCII = (Original ASCII + Key) mod 256
+                    </div>
+
+                    <h3>Decryption Formula:</h3>
+                    <div class="formula">
+                        Decrypted ASCII = (Encrypted ASCII - Key + 256) mod 256
+                    </div>
+
+                    <h3>What is Mod 256?</h3>
+                    <p>
+                        The modulo operation (mod) returns the remainder after division. "Mod 256" ensures that the result 
+                        always stays within the range 0-255, which corresponds to the extended ASCII character set. This creates 
+                        a "wrap-around" effect: if adding the key would exceed 255, it wraps back to 0.
+                    </p>
+
+                    <p>
+                        <strong>Example:</strong> If a character has ASCII value 250 and the key is 10, the result would be 
+                        (250 + 10) mod 256 = 260 mod 256 = 4. The value wraps around to 4.
+                    </p>
+
+                    <h3>Security Note:</h3>
+                    <p>
+                        While Caesar Cipher is great for learning cryptography concepts, it's not secure for real-world use. 
+                        With only 256 possible keys, it can be easily broken by trying all possibilities (brute force attack). 
+                        Modern encryption uses much more sophisticated algorithms.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let operationCounter = 0;
+
+        // Update key display
+        document.getElementById('keyInput').addEventListener('input', function() {
+            const key = parseInt(this.value) || 0;
+            const clampedKey = Math.max(0, Math.min(255, key));
+            document.getElementById('keyDisplay').textContent = clampedKey;
+        });
+
+        // Initialize key display
+        document.getElementById('keyDisplay').textContent = document.getElementById('keyInput').value;
+
+        // Generate ASCII reference table
+        function generateAsciiTable() {
+            const tbody = document.getElementById('asciiTableBody');
+            const descriptions = {
+                32: 'Space',
+                33: 'Exclamation mark',
+                34: 'Double quote',
+                35: 'Hash/Number sign',
+                36: 'Dollar sign',
+                37: 'Percent sign',
+                38: 'Ampersand',
+                39: 'Single quote',
+                40: 'Left parenthesis',
+                41: 'Right parenthesis',
+                42: 'Asterisk',
+                43: 'Plus sign',
+                44: 'Comma',
+                45: 'Hyphen/Minus',
+                46: 'Period',
+                47: 'Slash',
+                58: 'Colon',
+                59: 'Semicolon',
+                60: 'Less than',
+                61: 'Equals',
+                62: 'Greater than',
+                63: 'Question mark',
+                64: 'At sign',
+                91: 'Left bracket',
+                92: 'Backslash',
+                93: 'Right bracket',
+                94: 'Caret',
+                95: 'Underscore',
+                96: 'Backtick',
+                123: 'Left brace',
+                124: 'Vertical bar',
+                125: 'Right brace',
+                126: 'Tilde'
+            };
+
+            for (let i = 32; i <= 126; i++) {
+                const row = document.createElement('tr');
+                const char = String.fromCharCode(i);
+                let desc = descriptions[i];
+                
+                if (!desc) {
+                    if (i >= 48 && i <= 57) desc = `Digit ${i - 48}`;
+                    else if (i >= 65 && i <= 90) desc = `Uppercase ${char}`;
+                    else if (i >= 97 && i <= 122) desc = `Lowercase ${char}`;
+                }
+
+                row.innerHTML = `
+                    <td>${i}</td>
+                    <td class="ascii-char">${char}</td>
+                    <td>${desc}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function caesarCipher(text, key, mode) {
+            let result = '';
+            let visualization = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const ascii = char.charCodeAt(0);
+                let newAscii;
+                
+                if (mode === 'encrypt') {
+                    newAscii = (ascii + key) % 256;
+                    visualization += `<div class="viz-step">
+                        <strong>Char ${i + 1}:</strong> '${char}' → ASCII ${ascii} → 
+                        (${ascii} + ${key}) mod 256 = ${newAscii} → '${String.fromCharCode(newAscii)}'
+                    </div>`;
+                } else {
+                    newAscii = (ascii - key + 256) % 256;
+                    visualization += `<div class="viz-step">
+                        <strong>Char ${i + 1}:</strong> '${char}' → ASCII ${ascii} → 
+                        (${ascii} - ${key} + 256) mod 256 = ${newAscii} → '${String.fromCharCode(newAscii)}'
+                    </div>`;
+                }
+                
+                result += String.fromCharCode(newAscii);
+            }
+            
+            return { result, visualization };
+        }
+
+        function encrypt() {
+            const message = document.getElementById('messageInput').value;
+            const key = parseInt(document.getElementById('keyInput').value) || 0;
+            
+            if (!message) {
+                alert('Please enter a message to encrypt!');
+                return;
+            }
+
+            if (key < 0 || key > 255) {
+                alert('Key must be between 0 and 255!');
+                return;
+            }
+
+            const { result, visualization } = caesarCipher(message, key, 'encrypt');
+            
+            document.getElementById('output').textContent = result;
+            document.getElementById('visualization').innerHTML = visualization;
+            
+            addToHistory('ENCRYPT', key, message, result);
+        }
+
+        function decrypt() {
+            const message = document.getElementById('messageInput').value;
+            const key = parseInt(document.getElementById('keyInput').value) || 0;
+            
+            if (!message) {
+                alert('Please enter a message to decrypt!');
+                return;
+            }
+
+            if (key < 0 || key > 255) {
+                alert('Key must be between 0 and 255!');
+                return;
+            }
+
+            const { result, visualization } = caesarCipher(message, key, 'decrypt');
+            
+            document.getElementById('output').textContent = result;
+            document.getElementById('visualization').innerHTML = visualization;
+            
+            addToHistory('DECRYPT', key, message, result);
+        }
+
+        function addToHistory(mode, key, input, output) {
+            operationCounter++;
+            const tbody = document.getElementById('historyBody');
+            
+            // Remove "no operations" message if it exists
+            if (operationCounter === 1) {
+                tbody.innerHTML = '';
+            }
+            
+            const row = document.createElement('tr');
+            const truncateText = (text, maxLen = 50) => {
+                return text.length > maxLen ? text.substring(0, maxLen) + '...' : text;
+            };
+            
+            row.innerHTML = `
+                <td>${operationCounter}</td>
+                <td><strong style="color: ${mode === 'ENCRYPT' ? '#667eea' : '#764ba2'}">${mode}</strong></td>
+                <td>${key}</td>
+                <td title="${input}">${truncateText(input)}</td>
+                <td title="${output}">${truncateText(output)}</td>
+            `;
+            
+            // Add new row at the top
+            tbody.insertBefore(row, tbody.firstChild);
+        }
+
+        // Initialize ASCII table on page load
+        generateAsciiTable();
+    </script>
+</body>
+</html>
