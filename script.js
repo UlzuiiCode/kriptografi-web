@@ -243,7 +243,7 @@ function createAsciiTableRow(asciiCode, descriptions, descriptionsIndo) {
  */
 function caesarCipher(text, key, mode) {
     let result = '';
-    let visualization = '';
+    const visualizationContainer = document.createDocumentFragment();
     
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
@@ -252,16 +252,17 @@ function caesarCipher(text, key, mode) {
         
         if (mode === 'encrypt') {
             newAscii = (ascii + key) % 256;
-            visualization += createVisualizationStep(i + 1, char, ascii, key, newAscii, 'encrypt');
         } else {
             newAscii = (ascii - key + 256) % 256;
-            visualization += createVisualizationStep(i + 1, char, ascii, key, newAscii, 'decrypt');
         }
+        
+        const vizStep = createVisualizationStep(i + 1, char, ascii, key, newAscii, mode);
+        visualizationContainer.appendChild(vizStep);
         
         result += String.fromCharCode(newAscii);
     }
     
-    return { result, visualization };
+    return { result, visualizationContainer };
 }
 
 /**
@@ -272,22 +273,25 @@ function caesarCipher(text, key, mode) {
  * @param {number} key - Shift key
  * @param {number} newAscii - New ASCII value
  * @param {string} mode - 'encrypt' or 'decrypt'
- * @returns {string} HTML string for visualization step
+ * @returns {HTMLElement} Visualization step element
  */
 function createVisualizationStep(index, char, ascii, key, newAscii, mode) {
     const resultChar = String.fromCharCode(newAscii);
+    const div = document.createElement('div');
+    div.className = 'viz-step';
+    
+    const strong = document.createElement('strong');
+    strong.textContent = `Char ${index}:`;
     
     if (mode === 'encrypt') {
-        return `<div class="viz-step">
-            <strong>Char ${index}:</strong> '${char}' → ASCII ${ascii} → 
-            (${ascii} + ${key}) mod 256 = ${newAscii} → '${resultChar}'
-        </div>`;
+        div.appendChild(strong);
+        div.appendChild(document.createTextNode(` '${char}' → ASCII ${ascii} → (${ascii} + ${key}) mod 256 = ${newAscii} → '${resultChar}'`));
     } else {
-        return `<div class="viz-step">
-            <strong>Char ${index}:</strong> '${char}' → ASCII ${ascii} → 
-            (${ascii} - ${key} + 256) mod 256 = ${newAscii} → '${resultChar}'
-        </div>`;
+        div.appendChild(strong);
+        div.appendChild(document.createTextNode(` '${char}' → ASCII ${ascii} → (${ascii} - ${key} + 256) mod 256 = ${newAscii} → '${resultChar}'`));
     }
+    
+    return div;
 }
 
 /**
@@ -321,9 +325,9 @@ function encrypt() {
         return;
     }
 
-    const { result, visualization } = caesarCipher(message, key, 'encrypt');
+    const { result, visualizationContainer } = caesarCipher(message, key, 'encrypt');
     
-    displayResult(result, visualization);
+    displayResult(result, visualizationContainer);
     addToHistory('ENCRYPT', key, message, result);
 }
 
@@ -338,20 +342,23 @@ function decrypt() {
         return;
     }
 
-    const { result, visualization } = caesarCipher(message, key, 'decrypt');
+    const { result, visualizationContainer } = caesarCipher(message, key, 'decrypt');
     
-    displayResult(result, visualization);
+    displayResult(result, visualizationContainer);
     addToHistory('DECRYPT', key, message, result);
 }
 
 /**
  * Display result and visualization
  * @param {string} result - Cipher result
- * @param {string} visualization - Visualization HTML
+ * @param {DocumentFragment} visualizationContainer - Visualization DOM elements
  */
-function displayResult(result, visualization) {
+function displayResult(result, visualizationContainer) {
     document.getElementById('output').textContent = result;
-    document.getElementById('visualization').innerHTML = visualization;
+    
+    const vizElement = document.getElementById('visualization');
+    vizElement.innerHTML = ''; // Clear previous content
+    vizElement.appendChild(visualizationContainer);
 }
 
 /**
