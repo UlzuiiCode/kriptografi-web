@@ -411,62 +411,140 @@ tr:hover {
         width: 100%;
     }
 
-    /* Adjust header - add padding for hamburger button */
+    /* Adjust header - more compact */
     .top-header {
-        padding: 20px 20px 20px 75px;
+        padding: 15px 15px 15px 75px;
     }
 
     .top-header h1 {
-        font-size: 1.3em;
+        font-size: 1.2em;
+        line-height: 1.3;
+        margin-bottom: 5px;
     }
 
     .top-header p {
-        font-size: 0.85em;
+        font-size: 0.8em;
+        line-height: 1.4;
     }
 
     /* Adjust page padding */
     .page {
-        padding: 0 15px 20px 15px;
+        padding: 0 12px 15px 12px;
     }
 
-    /* Adjust card */
+    /* Adjust card - more compact */
     .card {
-        padding: 20px;
+        padding: 15px;
     }
 
-    /* Stack buttons vertically */
+    /* Adjust page header - more compact */
+    .page-header {
+        margin-bottom: 15px;
+    }
+
+    .page-header h2 {
+        font-size: 1.3em;
+        margin-bottom: 5px;
+    }
+
+    .page-header p {
+        font-size: 0.85em;
+    }
+
+    /* Input groups - reduce spacing */
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        margin-bottom: 6px;
+        font-size: 0.95em;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="number"] {
+        padding: 10px;
+        font-size: 0.95em;
+    }
+
+    textarea {
+        min-height: 80px;
+    }
+
+    /* Stack buttons vertically with better spacing */
     .button-group {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        margin-top: 15px;
     }
 
     button {
         width: 100%;
+        padding: 12px 20px;
+        font-size: 0.95em;
     }
 
-    /* Adjust page header */
-    .page-header h2 {
-        font-size: 1.5em;
+    /* Output box - more compact */
+    .output {
+        padding: 12px;
+        min-height: 50px;
+        font-size: 0.9em;
+    }
+
+    /* Key badge - smaller */
+    .key-info {
+        padding: 3px 8px;
+        font-size: 0.8em;
     }
 
     /* Adjust table font size */
     table {
-        font-size: 0.85em;
+        font-size: 0.8em;
     }
 
     th, td {
-        padding: 8px;
+        padding: 6px 8px;
     }
 
-    /* Adjust visualization */
+    /* Adjust visualization - more compact */
     .visualization {
-        font-size: 0.8em;
-        max-height: 250px;
+        font-size: 0.75em;
+        max-height: 200px;
+        padding: 10px;
+        line-height: 1.6;
+    }
+
+    .viz-step {
+        padding: 6px;
+        margin: 4px 0;
     }
 
     /* Adjust ASCII table */
     .ascii-table {
-        max-height: 300px;
+        max-height: 250px;
+    }
+
+    /* Info box - more compact */
+    .info-box {
+        padding: 15px;
+        font-size: 0.9em;
+        line-height: 1.6;
+    }
+
+    .info-box h3 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    .info-box p {
+        margin-bottom: 10px;
+    }
+
+    .formula {
+        padding: 10px;
+        font-size: 0.85em;
+        margin: 8px 0;
     }
 
     /* Make tables scrollable horizontally */
@@ -520,24 +598,24 @@ tr:hover {
 .mobile-menu-toggle {
     display: none;
     position: fixed;
-    top: 15px;
-    left: 15px;
+    top: 12px;
+    left: 12px;
     z-index: 1002;
     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
     border: none;
-    border-radius: 4px;
-    width: 50px;
-    height: 50px;
+    border-radius: 6px;
+    width: 48px;
+    height: 48px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(66, 153, 225, 0.6);
+    box-shadow: 0 3px 12px rgba(66, 153, 225, 0.5);
     transition: all 0.3s;
 }
 
 .mobile-menu-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(66, 153, 225, 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.7);
 }
 
 .mobile-menu-toggle:active {
@@ -545,7 +623,7 @@ tr:hover {
 }
 
 .hamburger-icon {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: white;
     font-weight: bold;
     line-height: 1;
